@@ -35,9 +35,7 @@ const ContactForm = () => {
       return;
     }
 
-    const [isAlreadyAdded] = contacts.map(contact =>
-      contact.name.includes(name)
-    );
+    const [isAlreadyAdded] = contacts.map(contact => contact.name === name);
 
     if (isAlreadyAdded) {
       Notify.failure(`${name} is already in contacts`);
