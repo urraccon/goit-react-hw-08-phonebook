@@ -4,42 +4,59 @@ import {
   Fields,
   Form,
   StyledNavLink,
-} from './RegisterForm.styles';
+} from './SignupForm.styles';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import Validation from 'components/common/services/validation/Validation';
+import Validation from 'components/common/services/Validation';
+import { useDispatch } from 'react-redux';
+import { userSignup } from 'components/redux/auth/operations';
 
-const RegisterForm = () => {
+const SignupForm = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
+  const [nameErr, setNameErr] = useState(null);
   const [emailErr, setEmailErr] = useState(null);
   const [passwordErr, setPasswordErr] = useState(null);
-  const [repeatPassErr, setRepeatPassErr] = useState(null);
+  const dispatch = useDispatch();
 
-  function registerSubmit(evt) {
-    console.dir(evt.target);
+  function handleSignupSubmit(evt) {
     evt.preventDefault();
-    const emailValue = evt.target[0].value;
-    const passwordValue = evt.target[2].value;
-    const repeatPassValue = evt.target[4].value;
-    const checkEmail = Validation.checkEmail(emailValue);
-    const checkPassword = Validation.checkPassword(passwordValue, 'register');
-    const checkRepeatPass = Validation.checkRepeatPass(
-      passwordValue,
-      repeatPassValue
-    );
-    setEmailErr(checkEmail);
-    setPasswordErr(checkPassword);
-    setRepeatPassErr(checkRepeatPass);
+    const nameValue = evt.target[0].value;
+    const emailValue = evt.target[2].value;
+    const passwordValue = evt.target[4].value;
+    const isNameInvalid = Validation.checkName(nameValue);
+    const isEmailInvalid = Validation.checkEmail(emailValue);
+    const isPasswordInvalid = Validation.checkPassword(passwordValue, 'signup');
+    setNameErr(isNameInvalid);
+    setEmailErr(isEmailInvalid);
+    setPasswordErr(isPasswordInvalid);
+    if (!isNameInvalid && !isEmailInvalid && !isPasswordInvalid) {
+      const signupData = {
+        name,
+        email,
+        password,
+      };
+      dispatch(userSignup(signupData));
+    }
   }
 
   return (
-    <Form onSubmit={registerSubmit}>
+    <Form onSubmit={handleSignupSubmit}>
       <Fields>
         <TextField
+          error={nameErr ? true : false}
+          type="text"
+          id="name"
+          label="Name"
+          helperText={nameErr ? nameErr : 'Please enter the name'}
+          size="small"
+          color="warning"
+          onChange={evt => setName(evt.target.value)}
+          value={name}
+        />
+        <TextField
           error={emailErr ? true : false}
-          required
           type="text"
           id="email"
           label="Email address"
@@ -54,7 +71,6 @@ const RegisterForm = () => {
         />
         <TextField
           error={passwordErr ? true : false}
-          required
           type="password"
           id="password"
           label="Password"
@@ -63,20 +79,6 @@ const RegisterForm = () => {
           color="warning"
           onChange={evt => setPassword(evt.target.value)}
           value={password}
-        />
-        <TextField
-          error={repeatPassErr ? true : false}
-          required
-          type="password"
-          id="repeat-password"
-          label="Repeat password"
-          helperText={
-            repeatPassErr ? repeatPassErr : 'Please reenter the password'
-          }
-          size="small"
-          color="warning"
-          onChange={evt => setRepeatPassword(evt.target.value)}
-          value={repeatPassword}
         />
       </Fields>
       <ButtonContainer>
@@ -116,4 +118,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default SignupForm;

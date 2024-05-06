@@ -7,11 +7,14 @@ export const Container = styled.section`
   height: 100vh;
 `;
 
+export const PaperStyling = {
+  backgroundColor: '#fae5d6',
+  border: '3px solid #d89c92',
+  borderRadius: '30px',
+};
+
 export const Content = styled.div`
-  background-color: #fae5d6;
   padding: 50px;
-  border: 3px solid #d89c92;
-  border-radius: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;

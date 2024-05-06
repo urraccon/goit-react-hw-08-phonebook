@@ -1,52 +1,54 @@
 import { Section } from 'components/common/components/section/Section';
 import {
-  selectErrAddContact,
-  selectErrContacts,
-  selectIsLoading,
-} from 'components/redux/selectors';
+  alertMessage,
+  selectStatus,
+} from 'components/redux/contacts/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import ContactForm from './components/contact_form/ContactForm';
-import { Filter } from './components/filter/Filter';
+import { Filter } from './components/Filter';
 import { ContactList } from './components/contact_list/ContactList';
-import { Loader } from 'components/common/components/loader/Loader';
-import { Contacts, Container, Content, Cover } from './ContactsPage.styles';
-import Error from 'components/common/components/error/Error';
-import { useEffect, useState } from 'react';
-import { setErrAddContact } from 'components/redux/errorSlice';
-import { Divider } from '@mui/material';
+import { Loader } from 'components/common/components/Loader';
+import {
+  Contacts,
+  Container,
+  Content,
+  PaperStyling,
+} from './ContactsPage.styles';
+import { useEffect } from 'react';
+import { Divider, Paper } from '@mui/material';
+import { selectIsLoggedIn } from 'components/redux/auth/selectors';
+import { useNavigate } from 'react-router-dom';
+import Alerts from 'components/common/components/alerts/Alerts';
+import { clearStatus } from 'components/redux/contacts/slices/contactsSlice';
 
 const ContactsPage = () => {
-  const [errorAlert, setErrorAlert] = useState(null);
-  const isLoading = useSelector(selectIsLoading);
-  const errorContacts = useSelector(selectErrContacts);
-  const errorAddContact = useSelector(selectErrAddContact);
+  const status = useSelector(selectStatus);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const alert = useSelector(alertMessage);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (errorAddContact) {
-      setErrorAlert(errorAddContact);
+    if (status === 'succeeded' || status === 'failed') {
       setTimeout(() => {
-        setErrorAlert(null);
-        dispatch(setErrAddContact(''));
-      }, 1500);
+        dispatch(clearStatus());
+      }, 2000);
     }
-  }, [errorAddContact, dispatch]);
+  }, [status, dispatch]);
 
   useEffect(() => {
-    if (errorContacts) {
-      setErrorAlert(errorContacts);
-      setTimeout(() => {
-        setErrorAlert(null);
-      }, 1500);
+    if (!isLoggedIn) {
+      navigate('/login');
     }
-  }, [errorContacts, isLoading]);
+  }, [isLoggedIn, navigate]);
 
   return (
     <>
-      {isLoading && <Loader />}
-      {errorAlert && <Error error={errorAlert} />}
+      {status === 'loading' && <Loader />}
+      {status === 'succeeded' && <Alerts type="success" message={alert} />}
+      {status === 'failed' && <Alerts type="error" message={alert} />}
       <Container>
-        <Cover>
+        <Paper elevation={6} sx={PaperStyling}>
           <Content>
             <Section
               name="Create contact"
@@ -65,7 +67,7 @@ const ContactsPage = () => {
               </Contacts>
             </Section>
           </Content>
-        </Cover>
+        </Paper>
       </Container>
     </>
   );

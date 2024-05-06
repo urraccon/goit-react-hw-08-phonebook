@@ -1,39 +1,33 @@
 import { Paper, Typography } from '@mui/material';
-import { Container, Content, Header, PaperStyling } from './LoginPage.styles';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  alertMessage,
-  selectOperation,
-  selectStatus,
-} from 'components/redux/auth/selectors';
-import { Loader } from 'components/common/components/Loader';
+import { Container, Content, Header, PaperStyling } from './SignupPage.styles';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertMessage, selectStatus } from 'components/redux/auth/selectors';
+import { Loader } from 'components/common/components/Loader';
 import { clearStatus } from 'components/redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import Alerts from 'components/common/components/alerts/Alerts';
-import LoginForm from './components/login_form/LoginForm';
+import SignupForm from './components/signup_form/SignupForm';
 
-const LoginPage = () => {
+const SignupPage = () => {
   const status = useSelector(selectStatus);
-  const operation = useSelector(selectOperation);
   const alert = useSelector(alertMessage);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === 'succeeded' && operation === 'login') {
+    if (status === 'succeeded') {
       setTimeout(() => {
         dispatch(clearStatus());
         navigate('/contacts');
       }, 1000);
-      return;
     }
-    if (status === 'succeeded' || status === 'failed') {
+    if (status === 'failed') {
       setTimeout(() => {
         dispatch(clearStatus());
       }, 2000);
     }
-  }, [status, dispatch, navigate, operation]);
+  }, [status, dispatch, navigate]);
 
   return (
     <>
@@ -45,13 +39,13 @@ const LoginPage = () => {
           <Content>
             <Header>
               <Typography variant="h4">
-                Welcome back to your phonebook
+                The simplest app to manage your contacts
               </Typography>
               <Typography variant="h6" sx={{ fontWeight: 400 }}>
-                Log in to see your contacts
+                Set a name, an email address and a password to creat an account
               </Typography>
             </Header>
-            <LoginForm />
+            <SignupForm />
           </Content>
         </Paper>
       </Container>
@@ -59,4 +53,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

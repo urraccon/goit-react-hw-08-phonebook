@@ -1,19 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'components/redux/selectors';
-import { addContact } from 'components/redux/operations';
-import { setErrAddContact } from 'components/redux/errorSlice';
+import { selectContacts } from 'components/redux/contacts/selectors';
+import { addContact } from 'components/redux/contacts/operations';
 import { Container, Fields, Form } from './ContactForm.styles';
 import { Button, TextField } from '@mui/material';
-import Validation from 'components/common/services/validation/Validation';
-
-function checkContact(contacts, name) {
-  const findContact = contacts.filter(contact => contact.name === name);
-  if (findContact.length > 0) {
-    return `${name} is already in contacts`;
-  }
-  return null;
-}
+import Validation from 'components/common/services/Validation';
+import {
+  setError,
+  setOperation,
+  setStatus,
+} from 'components/redux/contacts/slices/contactsSlice';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -25,18 +21,20 @@ const ContactForm = () => {
 
   const formSubmit = evt => {
     evt.preventDefault();
-    const checkName = Validation.checkName(name);
-    const checkPhone = Validation.checkPhone(phone);
-    const contactExist = checkContact(contacts, name);
-    setNameErr(checkName);
-    setPhoneErr(checkPhone);
-    if (contactExist) {
-      dispatch(setErrAddContact(contactExist));
+    const isNameInvalid = Validation.checkName(name);
+    const isPhoneInvalid = Validation.checkPhone(phone);
+    const isContactDuplicated = Validation.checkContact(contacts, name);
+    setNameErr(isNameInvalid);
+    setPhoneErr(isPhoneInvalid);
+    if (isContactDuplicated) {
+      dispatch(setStatus('failed'));
+      dispatch(setError(isContactDuplicated));
+      dispatch(setOperation('duplicateContact'));
     }
-    if (!checkName && !checkPhone && !contactExist) {
+    if (!isNameInvalid && !isPhoneInvalid && !isContactDuplicated) {
       const contact = {
         name,
-        phone,
+        number: phone,
       };
       dispatch(addContact(contact));
       setName('');
@@ -50,7 +48,6 @@ const ContactForm = () => {
         <Fields>
           <TextField
             error={nameErr ? true : false}
-            required
             type="text"
             id="name"
             label="Name"
@@ -65,7 +62,6 @@ const ContactForm = () => {
           />
           <TextField
             error={phoneErr ? true : false}
-            required
             type="tel"
             id="phone"
             label="Phone"

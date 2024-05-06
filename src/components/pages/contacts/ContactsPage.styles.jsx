@@ -7,11 +7,11 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const Cover = styled.div`
-  background-color: #fae5d6;
-  border: 3px solid #d89c92;
-  border-radius: 30px;
-`;
+export const PaperStyling = {
+  backgroundColor: '#fae5d6',
+  border: '3px solid #d89c92',
+  borderRadius: '30px',
+};
 
 export const Content = styled.div`
   display: flex;

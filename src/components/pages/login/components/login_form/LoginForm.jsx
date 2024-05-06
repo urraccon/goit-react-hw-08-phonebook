@@ -7,31 +7,39 @@ import {
 } from './LoginForm.styles';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import Validation from 'components/common/services/validation/Validation';
+import Validation from 'components/common/services/Validation';
+import { useDispatch } from 'react-redux';
+import { userLogin } from 'components/redux/auth/operations';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailErr, setEmailErr] = useState(null);
   const [passwordErr, setPasswordErr] = useState(null);
+  const dispatch = useDispatch();
 
-  function loginSubmit(evt) {
-    console.dir(evt.target);
+  function handleLoginSubmit(evt) {
     evt.preventDefault();
     const emailValue = evt.target[0].value;
     const passwordValue = evt.target[2].value;
-    const checkEmail = Validation.checkEmail(emailValue);
-    const checkPassword = Validation.checkPassword(passwordValue, 'login');
-    setEmailErr(checkEmail);
-    setPasswordErr(checkPassword);
+    const isEmailInvalid = Validation.checkEmail(emailValue);
+    const isPasswordInvalid = Validation.checkPassword(passwordValue, 'login');
+    setEmailErr(isEmailInvalid);
+    setPasswordErr(isPasswordInvalid);
+    if (!isEmailInvalid && !isPasswordInvalid) {
+      const loginData = {
+        email,
+        password,
+      };
+      dispatch(userLogin(loginData));
+    }
   }
 
   return (
-    <Form onSubmit={loginSubmit}>
+    <Form onSubmit={handleLoginSubmit}>
       <Fields>
         <TextField
           error={emailErr ? true : false}
-          required
           type="text"
           id="email"
           label="Email address"
@@ -46,7 +54,6 @@ const LoginForm = () => {
         />
         <TextField
           error={passwordErr ? true : false}
-          required
           type="password"
           id="password"
           label="Password"
@@ -79,7 +86,7 @@ const LoginForm = () => {
           If you don't have an account
           <StyledNavLink>
             <NavLink
-              to="/register"
+              to="/signup"
               style={{
                 all: 'unset',
               }}

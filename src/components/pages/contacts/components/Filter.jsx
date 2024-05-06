@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from 'components/redux/contactsFilterSlice';
-import { selectTerm } from 'components/redux/selectors';
+import { setFilter } from 'components/redux/contacts/slices/contactsFilterSlice';
+import { selectTerm } from 'components/redux/contacts/selectors';
 import { TextField } from '@mui/material';
 
 export const Filter = () => {

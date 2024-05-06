@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { filteredContacts } from 'components/redux/selectors';
-import { deleteContact, fetchContacts } from 'components/redux/operations';
+import { filteredContacts } from 'components/redux/contacts/selectors';
+import {
+  deleteContact,
+  fetchContacts,
+} from 'components/redux/contacts/operations';
 import { useEffect } from 'react';
 import {
   Divider,
@@ -52,7 +55,7 @@ export const ContactList = () => {
                 />
               </ListItemIcon>
               <ListItemText primary={contact.name} />
-              <ListItemText secondary={contact.phone} />
+              <ListItemText secondary={contact.number} />
             </ListItem>
             {contacts.length - 1 !== contacts.indexOf(contact) && <Divider />}
           </div>
