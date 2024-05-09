@@ -1,10 +1,5 @@
-import { Button, TextField, Typography } from '@mui/material';
-import {
-  ButtonContainer,
-  Form,
-  Fields,
-  StyledNavLink,
-} from './LoginForm.styles';
+import { Button, Link, TextField, Typography } from '@mui/material';
+import { ButtonContainer, Form, Fields } from './LoginForm.styles';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import Validation from 'components/common/services/Validation';
@@ -84,16 +79,18 @@ const LoginForm = () => {
           }}
         >
           If you don't have an account
-          <StyledNavLink>
-            <NavLink
-              to="/signup"
-              style={{
-                all: 'unset',
-              }}
-            >
-              Create account
-            </NavLink>
-          </StyledNavLink>
+          <Link
+            underline="hover"
+            component={NavLink}
+            to="/signup"
+            ml={0.4}
+            sx={{
+              color: '#ed6c02',
+              fontWeight: 700,
+            }}
+          >
+            Create account
+          </Link>
         </Typography>
       </ButtonContainer>
     </Form>

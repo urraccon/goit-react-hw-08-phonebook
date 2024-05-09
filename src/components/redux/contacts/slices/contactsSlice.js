@@ -12,17 +12,10 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    setError(state, action) {
-      state.error = action.payload;
-    },
-    setStatus(state, action) {
+    setRejectedStatus(state, action) {
       state.status = 'failed';
-    },
-    clearStatus(state, action) {
-      state.status = action.payload;
-    },
-    setOperation(state, action) {
-      state.operation = action.payload;
+      state.error = action.payload.error;
+      state.operation = action.payload.operation;
     },
   },
   extraReducers: builder => {
@@ -74,6 +67,5 @@ const contactsSlice = createSlice({
   },
 });
 
-export const { setError, setStatus, clearStatus, setOperation } =
-  contactsSlice.actions;
+export const { setRejectedStatus } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

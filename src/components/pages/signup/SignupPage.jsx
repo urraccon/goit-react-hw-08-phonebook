@@ -2,32 +2,35 @@ import { Paper, Typography } from '@mui/material';
 import { Container, Content, Header, PaperStyling } from './SignupPage.styles';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { alertMessage, selectStatus } from 'components/redux/auth/selectors';
+import {
+  alertMessage,
+  selectOperation,
+  selectStatus,
+} from 'components/redux/auth/selectors';
 import { Loader } from 'components/common/components/Loader';
-import { clearStatus } from 'components/redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import Alerts from 'components/common/components/alerts/Alerts';
+import Alerts from 'components/common/components/Alerts';
 import SignupForm from './components/signup_form/SignupForm';
+import { clearLastStatus } from 'components/redux/auth/authSlice';
 
 const SignupPage = () => {
   const status = useSelector(selectStatus);
   const alert = useSelector(alertMessage);
-  const dispatch = useDispatch();
+  const operation = useSelector(selectOperation);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (status === 'succeeded' && operation === 'login') {
       setTimeout(() => {
-        dispatch(clearStatus());
         navigate('/contacts');
+        dispatch(clearLastStatus());
       }, 1000);
     }
-    if (status === 'failed') {
-      setTimeout(() => {
-        dispatch(clearStatus());
-      }, 2000);
+    if (operation === 'logout') {
+      dispatch(clearLastStatus());
     }
-  }, [status, dispatch, navigate]);
+  }, [status, operation, navigate, dispatch]);
 
   return (
     <>

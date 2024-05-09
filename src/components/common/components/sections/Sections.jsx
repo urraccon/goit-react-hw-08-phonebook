@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
-import { Content, Header, SectionContainer } from './Section.styles';
+import { Content, Header, Section } from './Sections.styles';
 
-export const Section = ({ name, descr, children }) => {
+export const Sections = ({ name, descr, children }) => {
   return (
-    <SectionContainer>
+    <Section>
       <Content>
         <Header>
           <Typography variant="h5" ml={1.5}>
@@ -14,11 +14,11 @@ export const Section = ({ name, descr, children }) => {
         </Header>
         {children}
       </Content>
-    </SectionContainer>
+    </Section>
   );
 };
 
-Section.propTypes = {
+Sections.propTypes = {
   name: PropTypes.string,
   descr: PropTypes.string,
 };

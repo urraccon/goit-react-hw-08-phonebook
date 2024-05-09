@@ -2,9 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Config from 'components/common/Config';
 
-const TOKEN = 'token';
-
-Config.setRequestsURL();
+Config.setRequestURL();
 
 export const userLogin = createAsyncThunk(
   'auth/login',
@@ -12,7 +10,7 @@ export const userLogin = createAsyncThunk(
     try {
       const response = await axios.post('/users/login', loginData);
       const accessToken = response.data.token;
-      localStorage.setItem(TOKEN, accessToken);
+      Config.setRequestURL(accessToken);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -27,7 +25,7 @@ export const userSignup = createAsyncThunk(
     try {
       const response = await axios.post('/users/signup', signupData);
       const accessToken = response.data.token;
-      localStorage.setItem(TOKEN, accessToken);
+      Config.setRequestURL(accessToken);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -42,7 +40,6 @@ export const userLogout = createAsyncThunk(
     try {
       const response = await axios.post('/users/logout');
       console.dir(response.data);
-      localStorage.removeItem(TOKEN);
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.status);

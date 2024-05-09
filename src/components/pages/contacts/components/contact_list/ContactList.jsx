@@ -15,11 +15,20 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StarIcon from '@mui/icons-material/Star';
-import { Container } from './ContactList.styles';
+import { Container, Scrollbar } from './ContactList.styles';
+import { selectUserToken } from 'components/redux/auth/selectors';
+import Config from 'components/common/Config';
 
 export const ContactList = () => {
   const contacts = useSelector(filteredContacts);
+  const accessToken = useSelector(selectUserToken);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (accessToken) {
+      Config.setRequestURL(accessToken);
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -27,40 +36,42 @@ export const ContactList = () => {
 
   return (
     <Container>
-      <List
-        aria-label="contacts"
-        disablePadding
-        sx={{
-          marginRight: '10px',
-        }}
-      >
-        {contacts.map(contact => (
-          <div key={contact.id}>
-            <ListItem
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => dispatch(deleteContact(contact.id))}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemIcon>
-                <StarIcon
-                  sx={{
-                    fill: '#d89c92',
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText primary={contact.name} />
-              <ListItemText secondary={contact.number} />
-            </ListItem>
-            {contacts.length - 1 !== contacts.indexOf(contact) && <Divider />}
-          </div>
-        ))}
-      </List>
+      <Scrollbar>
+        <List
+          aria-label="contacts"
+          disablePadding
+          sx={{
+            marginRight: '10px',
+          }}
+        >
+          {contacts.map(contact => (
+            <div key={contact.id}>
+              <ListItem
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => dispatch(deleteContact(contact.id))}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemIcon>
+                  <StarIcon
+                    sx={{
+                      fill: '#d89c92',
+                    }}
+                  />
+                </ListItemIcon>
+                <ListItemText primary={contact.name} />
+                <ListItemText secondary={contact.number} />
+              </ListItem>
+              {contacts.length - 1 !== contacts.indexOf(contact) && <Divider />}
+            </div>
+          ))}
+        </List>
+      </Scrollbar>
     </Container>
   );
 };

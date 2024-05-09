@@ -5,11 +5,7 @@ import { addContact } from 'components/redux/contacts/operations';
 import { Container, Fields, Form } from './ContactForm.styles';
 import { Button, TextField } from '@mui/material';
 import Validation from 'components/common/services/Validation';
-import {
-  setError,
-  setOperation,
-  setStatus,
-} from 'components/redux/contacts/slices/contactsSlice';
+import { setRejectedStatus } from 'components/redux/contacts/slices/contactsSlice';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -27,9 +23,11 @@ const ContactForm = () => {
     setNameErr(isNameInvalid);
     setPhoneErr(isPhoneInvalid);
     if (isContactDuplicated) {
-      dispatch(setStatus('failed'));
-      dispatch(setError(isContactDuplicated));
-      dispatch(setOperation('duplicateContact'));
+      const rejectedStatus = {
+        error: isContactDuplicated,
+        operation: 'duplicateContact',
+      };
+      dispatch(setRejectedStatus(rejectedStatus));
     }
     if (!isNameInvalid && !isPhoneInvalid && !isContactDuplicated) {
       const contact = {

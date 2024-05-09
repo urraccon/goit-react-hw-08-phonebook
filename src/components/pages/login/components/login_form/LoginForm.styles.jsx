@@ -17,13 +17,3 @@ export const ButtonContainer = styled.div`
   flex-direction: column;
   gap: 4px;
 `;
-
-export const StyledNavLink = styled.span`
-  font-weight: 900;
-  margin-left: 3.2px;
-  color: #ed6c02;
-  cursor: pointer;
-  &:hover {
-    color: #e65100;
-  }
-`;

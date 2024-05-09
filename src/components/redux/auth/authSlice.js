@@ -1,18 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userLogin, userLogout, userSignup } from './operations';
 
-const TOKEN = 'token';
-const accessToken = localStorage.getItem(TOKEN)
-  ? localStorage.getItem(TOKEN)
-  : null;
-const isLoggedIn = accessToken ? true : false;
-
 const initialState = {
-  isLoggedIn,
+  isLoggedIn: false,
   user: {
     name: null,
     email: null,
-    accessToken,
+    accessToken: null,
   },
   status: 'inactive',
   error: null,
@@ -23,8 +17,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    clearStatus(state, action) {
+    clearLastStatus(state, action) {
       state.status = 'inactive';
+      state.error = null;
+      state.operation = null;
     },
   },
   extraReducers: builder => {
@@ -88,6 +84,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearStatus } = authSlice.actions;
-
+export const { clearLastStatus } = authSlice.actions;
 export const authReducer = authSlice.reducer;

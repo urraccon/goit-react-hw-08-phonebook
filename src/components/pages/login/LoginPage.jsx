@@ -8,32 +8,26 @@ import {
 } from 'components/redux/auth/selectors';
 import { Loader } from 'components/common/components/Loader';
 import { useEffect } from 'react';
-import { clearStatus } from 'components/redux/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import Alerts from 'components/common/components/alerts/Alerts';
+import Alerts from 'components/common/components/Alerts';
 import LoginForm from './components/login_form/LoginForm';
+import { clearLastStatus } from 'components/redux/auth/authSlice';
 
 const LoginPage = () => {
   const status = useSelector(selectStatus);
   const operation = useSelector(selectOperation);
   const alert = useSelector(alertMessage);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (status === 'succeeded' && operation === 'login') {
       setTimeout(() => {
-        dispatch(clearStatus());
         navigate('/contacts');
+        dispatch(clearLastStatus());
       }, 1000);
-      return;
     }
-    if (status === 'succeeded' || status === 'failed') {
-      setTimeout(() => {
-        dispatch(clearStatus());
-      }, 2000);
-    }
-  }, [status, dispatch, navigate, operation]);
+  }, [status, operation, navigate, dispatch]);
 
   return (
     <>

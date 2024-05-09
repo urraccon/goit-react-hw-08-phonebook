@@ -1,8 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import Config from 'components/common/Config';
-
-Config.setRequestsURL();
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',

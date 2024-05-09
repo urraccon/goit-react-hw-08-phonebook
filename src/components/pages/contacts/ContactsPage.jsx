@@ -1,9 +1,8 @@
-import { Section } from 'components/common/components/section/Section';
 import {
   alertMessage,
   selectStatus,
 } from 'components/redux/contacts/selectors';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ContactForm from './components/contact_form/ContactForm';
 import { Filter } from './components/Filter';
 import { ContactList } from './components/contact_list/ContactList';
@@ -18,23 +17,16 @@ import { useEffect } from 'react';
 import { Divider, Paper } from '@mui/material';
 import { selectIsLoggedIn } from 'components/redux/auth/selectors';
 import { useNavigate } from 'react-router-dom';
-import Alerts from 'components/common/components/alerts/Alerts';
-import { clearStatus } from 'components/redux/contacts/slices/contactsSlice';
+import Alerts from 'components/common/components/Alerts';
+import { Sections } from 'components/common/components/sections/Sections';
+import NavBar from 'components/common/components/nav_bar/NavBar';
 
 const ContactsPage = () => {
   const status = useSelector(selectStatus);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const alert = useSelector(alertMessage);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (status === 'succeeded' || status === 'failed') {
-      setTimeout(() => {
-        dispatch(clearStatus());
-      }, 2000);
-    }
-  }, [status, dispatch]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -47,17 +39,18 @@ const ContactsPage = () => {
       {status === 'loading' && <Loader />}
       {status === 'succeeded' && <Alerts type="success" message={alert} />}
       {status === 'failed' && <Alerts type="error" message={alert} />}
+      <NavBar />
       <Container>
         <Paper elevation={6} sx={PaperStyling}>
           <Content>
-            <Section
+            <Sections
               name="Create contact"
               descr="Do you have a new contact? Add it"
             >
               <ContactForm />
-            </Section>
+            </Sections>
             <Divider variant="fullwidth" orientation="vertical" />
-            <Section
+            <Sections
               name="Contacts"
               descr="Looking for a contact? Use the search bar"
             >
@@ -65,7 +58,7 @@ const ContactsPage = () => {
                 <Filter />
                 <ContactList />
               </Contacts>
-            </Section>
+            </Sections>
           </Content>
         </Paper>
       </Container>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AppStyling = styled.main`
+export const GlobalStyling = styled.main`
   color: #654945;
   letter-spacing: 1px;
 `;

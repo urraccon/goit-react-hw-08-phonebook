@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/login/LoginPage';
 import SharedLayout from './pages/shared-layout/SharedLayout';
-import { AppStyling } from './App.styles';
+import { GlobalStyling } from './App.styles';
 import '@fontsource/roboto';
 import '@fontsource-variable/edu-nsw-act-foundation';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearLastStatus } from './redux/auth/authSlice';
 
 const SignupPage = lazy(() => import('./pages/signup/SignupPage'));
 const ContactsPage = lazy(() => import('./pages/contacts/ContactsPage'));
@@ -17,8 +19,14 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearLastStatus());
+  }, [dispatch]);
+
   return (
-    <AppStyling>
+    <GlobalStyling>
       <ThemeProvider theme={theme}>
         <BrowserRouter basename="/goit-react-hw-08-phonebook">
           <Routes>
@@ -31,7 +39,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
-    </AppStyling>
+    </GlobalStyling>
   );
 };
 

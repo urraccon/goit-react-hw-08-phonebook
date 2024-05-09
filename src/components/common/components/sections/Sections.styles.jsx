@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SectionContainer = styled.section`
+export const Section = styled.section`
   width: 400px;
   height: calc(100% - 50px * 2);
   padding: 50px;
