@@ -19,7 +19,7 @@ import { selectIsLoggedIn } from 'components/redux/auth/selectors';
 import { useNavigate } from 'react-router-dom';
 import Alerts from 'components/common/components/Alerts';
 import { Sections } from 'components/common/components/sections/Sections';
-import NavBar from 'components/common/components/nav_bar/NavBar';
+import { NavBar } from 'components/common/components/nav_bar/NavBar';
 
 const ContactsPage = () => {
   const status = useSelector(selectStatus);

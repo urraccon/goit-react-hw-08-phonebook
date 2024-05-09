@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from 'components/redux/auth/operations';
 import { selectUsername } from 'components/redux/auth/selectors';
 
-const NavBar = () => {
+export const NavBar = () => {
   const username = useSelector(selectUsername);
   const dispatch = useDispatch();
 
@@ -30,5 +30,3 @@ const NavBar = () => {
     </Container>
   );
 };
-
-export default NavBar;
