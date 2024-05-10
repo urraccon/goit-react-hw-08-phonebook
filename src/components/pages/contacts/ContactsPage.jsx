@@ -11,6 +11,7 @@ import {
   Contacts,
   Container,
   Content,
+  PaperContent,
   PaperStyling,
 } from './ContactsPage.styles';
 import { useEffect } from 'react';
@@ -20,13 +21,16 @@ import { useNavigate } from 'react-router-dom';
 import Alerts from 'components/common/components/Alerts';
 import { Sections } from 'components/common/components/sections/Sections';
 import NavBar from 'components/common/components/nav_bar/NavBar';
+import { useMediaQuery } from 'react-responsive';
 
 const ContactsPage = () => {
   const status = useSelector(selectStatus);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const alert = useSelector(alertMessage);
-
   const navigate = useNavigate();
+  const tablet = useMediaQuery({
+    maxWidth: 1023,
+  });
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -41,26 +45,37 @@ const ContactsPage = () => {
       {status === 'failed' && <Alerts type="error" message={alert} />}
       <NavBar />
       <Container>
-        <Paper elevation={6} sx={PaperStyling}>
-          <Content>
-            <Sections
-              name="Create contact"
-              descr="Do you have a new contact? Add it"
-            >
-              <ContactForm />
-            </Sections>
-            <Divider variant="fullwidth" orientation="vertical" />
-            <Sections
-              name="Contacts"
-              descr="Looking for a contact? Use the search bar"
-            >
-              <Contacts>
-                <Filter />
-                <ContactList />
-              </Contacts>
-            </Sections>
-          </Content>
-        </Paper>
+        <Content>
+          <Paper
+            elevation={6}
+            sx={{
+              ...PaperStyling,
+              margin: `${tablet ? '90px 0 50px' : null}`,
+            }}
+          >
+            <PaperContent>
+              <Sections
+                name="Create contact"
+                descr="Do you have a new contact? Add it"
+              >
+                <ContactForm />
+              </Sections>
+              <Divider
+                variant="fullwidth"
+                orientation={`${tablet ? 'horizontal' : 'vertical'}`}
+              />
+              <Sections
+                name="Contacts"
+                descr="Looking for a contact? Use the search bar"
+              >
+                <Contacts>
+                  <Filter />
+                  <ContactList />
+                </Contacts>
+              </Sections>
+            </PaperContent>
+          </Paper>
+        </Content>
       </Container>
     </>
   );

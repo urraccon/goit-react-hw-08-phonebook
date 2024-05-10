@@ -1,28 +1,34 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 160px;
+@ media screen and (min-width: 1024px) {
+  max-height: 160px;
+}
+  
   width: 85%;
   }
 `;
 
 export const Scrollbar = styled.div`
-  height: inherit;
-  overflow: auto;
+  height: 100%;
 
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
+  @media screen and (min-width: 1024px) {
+    overflow: auto;
 
-  &::-webkit-scrollbar-track {
-    background: white;
-  }
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background: rgb(237, 108, 2);
-  }
+    &::-webkit-scrollbar-track {
+      background: white;
+    }
 
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgb(230, 81, 0);
+    &::-webkit-scrollbar-thumb {
+      background: rgb(237, 108, 2);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgb(230, 81, 0);
+    }
   }
 `;
