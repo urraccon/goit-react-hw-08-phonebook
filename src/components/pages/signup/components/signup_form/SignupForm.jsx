@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Validation from 'components/common/services/Validation';
 import { useDispatch } from 'react-redux';
 import { userSignup } from 'components/redux/auth/operations';
+import { useMediaQuery } from 'react-responsive';
 
 const SignupForm = () => {
   const [name, setName] = useState('');
@@ -14,6 +15,9 @@ const SignupForm = () => {
   const [emailErr, setEmailErr] = useState(null);
   const [passwordErr, setPasswordErr] = useState(null);
   const dispatch = useDispatch();
+  const mobile = useMediaQuery({
+    maxWidth: 767,
+  });
 
   function handleSignupSubmit(evt) {
     evt.preventDefault();
@@ -49,6 +53,9 @@ const SignupForm = () => {
           color="warning"
           onChange={evt => setName(evt.target.value)}
           value={name}
+          sx={{
+            minWidth: `${!mobile && '28ch'}`,
+          }}
         />
         <TextField
           error={emailErr ? true : false}
@@ -58,9 +65,6 @@ const SignupForm = () => {
           helperText={emailErr ? emailErr : 'Please enter the email address'}
           size="small"
           color="warning"
-          sx={{
-            minWidth: '28ch',
-          }}
           onChange={evt => setEmail(evt.target.value)}
           value={email}
         />

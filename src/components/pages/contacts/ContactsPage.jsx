@@ -11,7 +11,6 @@ import {
   Contacts,
   Container,
   Content,
-  PaperContent,
   PaperStyling,
 } from './ContactsPage.styles';
 import { useEffect } from 'react';
@@ -30,6 +29,10 @@ const ContactsPage = () => {
   const navigate = useNavigate();
   const tablet = useMediaQuery({
     maxWidth: 1023,
+    minWidth: 768,
+  });
+  const mobile = useMediaQuery({
+    maxWidth: 767,
   });
 
   useEffect(() => {
@@ -45,37 +48,37 @@ const ContactsPage = () => {
       {status === 'failed' && <Alerts type="error" message={alert} />}
       <NavBar />
       <Container>
-        <Content>
-          <Paper
-            elevation={6}
-            sx={{
-              ...PaperStyling,
-              margin: `${tablet ? '90px 0 50px' : null}`,
-            }}
-          >
-            <PaperContent>
-              <Sections
-                name="Create contact"
-                descr="Do you have a new contact? Add it"
-              >
-                <ContactForm />
-              </Sections>
-              <Divider
-                variant="fullwidth"
-                orientation={`${tablet ? 'horizontal' : 'vertical'}`}
-              />
-              <Sections
-                name="Contacts"
-                descr="Looking for a contact? Use the search bar"
-              >
-                <Contacts>
-                  <Filter />
-                  <ContactList />
-                </Contacts>
-              </Sections>
-            </PaperContent>
-          </Paper>
-        </Content>
+        <Paper
+          elevation={6}
+          sx={{
+            ...PaperStyling,
+            margin: `${tablet ? '90px 0 50px' : mobile && '55px 15px 15px'}`,
+            width: `${mobile ? '100%' : 'fit-content'}`,
+            maxWidth: `${mobile && '400px'}`,
+          }}
+        >
+          <Content>
+            <Sections
+              name="Create contact"
+              descr="Do you have a new contact? Add it"
+            >
+              <ContactForm />
+            </Sections>
+            <Divider
+              variant="fullwidth"
+              orientation={`${tablet ? 'horizontal' : 'vertical'}`}
+            />
+            <Sections
+              name="Contacts"
+              descr="Looking for a contact? Use the search bar"
+            >
+              <Contacts>
+                <Filter />
+                <ContactList />
+              </Contacts>
+            </Sections>
+          </Content>
+        </Paper>
       </Container>
     </>
   );

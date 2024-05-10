@@ -18,11 +18,15 @@ import StarIcon from '@mui/icons-material/Star';
 import { Container, Scrollbar } from './ContactList.styles';
 import { selectUserToken } from 'components/redux/auth/selectors';
 import Config from 'components/common/Config';
+import { useMediaQuery } from 'react-responsive';
 
 export const ContactList = () => {
   const contacts = useSelector(filteredContacts);
   const accessToken = useSelector(selectUserToken);
   const dispatch = useDispatch();
+  const tablet = useMediaQuery({
+    maxWidth: 1023,
+  });
 
   useEffect(() => {
     if (accessToken) {
@@ -41,7 +45,7 @@ export const ContactList = () => {
           aria-label="contacts"
           disablePadding
           sx={{
-            marginRight: '10px',
+            marginRight: `${!tablet && '10px'}`,
           }}
         >
           {contacts.map(contact => (

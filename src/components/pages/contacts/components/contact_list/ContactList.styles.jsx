@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-@ media screen and (min-width: 1024px) {
-  max-height: 160px;
-}
-  
-  width: 85%;
+  width: 350px;
+
+  @media screen and (min-width: 1024px) {
+    max-height: 160px;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    max-width: 320px;
   }
 `;
 
